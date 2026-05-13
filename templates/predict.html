@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQI Prediction — AirAware</title>
+    <meta name="description"
+        content="Check real-time air quality index and get AI-powered predictions with health advisories.">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=4">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <span class="logo-icon">🌬️</span>
+                AirAware
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-1">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/city-aqi">City AQI</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#about">About</a></li>
+                    <li class="nav-item ms-2">
+                        <a href="/predict-page" class="btn-nav-cta active">
+                            <i class="fas fa-wind me-1"></i>Check AQI
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero Strip -->
+    <div class="page-hero-strip">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb-nav d-flex justify-content-center mb-2" aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0"
+                    style="background:transparent; --bs-breadcrumb-divider-color:rgba(255,255,255,0.5)">
+                    <li class="breadcrumb-item"><a href="/" style="color:rgba(255,255,255,0.75)">Home</a></li>
+                    <li class="breadcrumb-item active" style="color:#fff">AQI Prediction</li>
+                </ol>
+            </nav>
+            <h1><i class="fas fa-wind me-2 opacity-75"></i>Air Quality Prediction</h1>
+            <p>Enter pollutant values to get an instant AI-powered AQI prediction with health advisory.</p>
+        </div>
+    </div>
+
+    <!-- Prediction Container -->
+    <div class="prediction-container" style="padding-top:2rem">
+        <div class="container">
+            <div class="row justify-content-center g-4">
+
+                <!-- Input Form Card -->
+                <div class="col-lg-7">
+                    <div class="prediction-card position-relative">
+                        <!-- Loading Overlay -->
+                        <div class="loading-overlay d-none" id="loadingOverlay">
+                            <div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span>
+                            </div>
+                            <span class="loading-text">Analyzing pollutant data…</span>
+                        </div>
+
+                        <h3 class="card-section-title mb-4">
+                            <i class="fas fa-flask"></i>Enter Pollutant Levels
+                        </h3>
+
+                        <div class="row g-4">
+                            <!-- PM2.5 -->
+                            <div class="col-md-6">
+                                <label class="form-label" for="pm25">
+                                    <i class="fas fa-smog"></i>PM2.5
+                                    <span class="input-unit-badge ms-auto">μg/m³</span>
+                                </label>
+                                <input type="number" id="pm25" class="form-control" placeholder="e.g. 35.5" step="0.1"
+                                    min="0">
+                                <p class="input-hint">Good: <span class="good-range">0–12</span> · Moderate: 12–35</p>
+                            </div>
+                            <!-- PM10 -->
+                            <div class="col-md-6">
+                                <label class="form-label" for="pm10">
+                                    <i class="fas fa-cloud"></i>PM10
+                                    <span class="input-unit-badge ms-auto">μg/m³</span>
+                                </label>
+                                <input type="number" id="pm10" class="form-control" placeholder="e.g. 50.2" step="0.1"
+                                    min="0">
+                                <p class="input-hint">Good: <span class="good-range">0–54</span> · Moderate: 54–154</p>
+                            </div>
+                            <!-- NO2 -->
+                            <div class="col-md-6">
+                                <label class="form-label" for="no2">
+                                    <i class="fas fa-wind"></i>NO₂
+                                    <span class="input-unit-badge ms-auto">ppb</span>
+                                </label>
+                                <input type="number" id="no2" class="form-control" placeholder="e.g. 25.8" step="0.1"
+                                    min="0">
+                                <p class="input-hint">Good: <span class="good-range">0–53</span> · Moderate: 53–100</p>
+                            </div>
+                            <!-- SO2 -->
+                            <div class="col-md-6">
+                                <label class="form-label" for="so2">
+                                    <i class="fas fa-industry"></i>SO₂
+                                    <span class="input-unit-badge ms-auto">ppb</span>
+                                </label>
+                                <input type="number" id="so2" class="form-control" placeholder="e.g. 15.3" step="0.1"
+                                    min="0">
+                                <p class="input-hint">Good: <span class="good-range">0–35</span> · Moderate: 35–75</p>
+                            </div>
+                            <!-- CO -->
+                            <div class="col-md-6">
+                                <label class="form-label" for="co">
+                                    <i class="fas fa-car"></i>CO
+                                    <span class="input-unit-badge ms-auto">ppm</span>
+                                </label>
+                                <input type="number" id="co" class="form-control" placeholder="e.g. 1.2" step="0.1"
+                                    min="0">
+                                <p class="input-hint">Good: <span class="good-range">0–4.4</span> · Moderate: 4.4–9.4
+                                </p>
+                            </div>
+                            <!-- O3 -->
+                            <div class="col-md-6">
+                                <label class="form-label" for="o3">
+                                    <i class="fas fa-sun"></i>O₃
+                                    <span class="input-unit-badge ms-auto">ppb</span>
+                                </label>
+                                <input type="number" id="o3" class="form-control" placeholder="e.g. 45.7" step="0.1"
+                                    min="0">
+                                <p class="input-hint">Good: <span class="good-range">0–54</span> · Moderate: 54–70</p>
+                            </div>
+                        </div>
+
+                        <button class="btn-predict" id="predictBtn" onclick="predictAQI()">
+                            <i class="fas fa-calculator"></i>
+                            <span id="predictBtnText">Predict AQI</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Result Card -->
+                <div class="col-lg-5 d-none" id="result">
+                    <div class="result-card">
+                        <h3 class="card-section-title mb-3">
+                            <i class="fas fa-chart-bar"></i>Prediction Results
+                        </h3>
+
+                        <!-- AQI Gauge -->
+                        <div class="aqi-gauge-container">
+                            <div class="aqi-gauge">
+                                <svg class="gauge-svg" viewBox="0 0 200 200">
+                                    <circle class="gauge-background" cx="100" cy="100" r="80"></circle>
+                                    <circle id="gaugeProgress" class="gauge-progress" cx="100" cy="100" r="80"
+                                        stroke-dasharray="502.4" stroke-dashoffset="502.4"></circle>
+                                </svg>
+                                <div class="gauge-center">
+                                    <div id="aqiValue" class="gauge-value">—</div>
+                                    <div class="gauge-label">AQI Score</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Category Badge -->
+                        <div class="text-center mb-3">
+                            <span id="aqiCategory" class="aqi-category-badge"></span>
+                        </div>
+
+                        <!-- Dominant Pollutant -->
+                        <div class="text-center mb-3">
+                            <p class="mb-1"
+                                style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted)">
+                                Dominant Pollutant</p>
+                            <span id="dominantPollutant" class="pollutant-chip"></span>
+                        </div>
+
+                        <hr class="divider">
+
+                        <!-- Health Advisory -->
+                        <div id="healthAdvisory" class="health-advisory">
+                            <div class="advisory-level" id="advisoryLevel">Health Advisory</div>
+                            <div class="advisory-title">
+                                <i class="fas fa-shield-alt me-2" style="color:var(--primary)"></i>
+                                <span id="advisoryTitle"></span>
+                            </div>
+                            <p id="advisoryText" class="advisory-text mb-0 mt-1"></p>
+                        </div>
+
+                        <hr class="divider">
+
+                        <!-- Pollutant Breakdown -->
+                        <div>
+                            <p class="card-section-title mb-3" style="font-size:0.85rem">
+                                <i class="fas fa-table-list"></i>Pollutant vs Safe Threshold
+                            </p>
+                            <table class="pollutant-bar-table" id="pollutantTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width:70px">Pollutant</th>
+                                        <th>Level vs Good Threshold</th>
+                                        <th style="width:55px;text-align:right">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pollutantTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row align-items-center gy-3">
+                <div class="col-md-6 text-center text-md-start">
+                    <div class="footer-brand">🌬️ AirAware</div>
+                    <p class="footer-tagline">Breathing intelligence into every forecast.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="footer-links justify-content-center justify-content-md-end">
+                        <a href="/" class="footer-link">Home</a>
+                        <a href="/city-aqi" class="footer-link">City AQI</a>
+                        <a href="/#about" class="footer-link">About</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="divider mt-3 mb-2">
+            <p class="footer-copy">© 2026 AirAware. Powered by AI & Machine Learning for Environmental Intelligence.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container-custom" id="toastContainer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}?v=4"></script>
+</body>
+
+</html>

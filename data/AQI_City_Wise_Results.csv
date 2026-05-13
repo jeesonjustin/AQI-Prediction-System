@@ -1,0 +1,11 @@
+City,ML AQI,ML Category,Rule AQI,Rule Category,Dominant Pollutant,Confidence (%)
+Thiruvananthapuram,115,Satisfactory,63,Satisfactory,CO,56.0
+Kolkata,90,Satisfactory,61,Satisfactory,PM2.5,96.0
+Ahmedabad,203,Moderate,412,Severe,CO,41.0
+Ahmedabad,198,Moderate,302,Very Poor,CO,53.5
+Kolkata,66,Satisfactory,57,Satisfactory,PM10,92.5
+Mumbai,164,Moderate,143,Moderate,PM10,94.0
+Kochi,79,Satisfactory,73,Satisfactory,CO,60.5
+Delhi,138,Moderate,137,Moderate,PM10,97.5
+Delhi,310,Very Poor,312,Very Poor,PM2.5,51.0
+Visakhapatnam,49,Good,50,Good,PM10,82.5
