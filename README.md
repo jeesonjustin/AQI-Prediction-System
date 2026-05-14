@@ -149,8 +149,11 @@ http://127.0.0.1:5000
 ## Academic Information
 
 Project Title: AQI-Prediction-System
+
 Course: Master of Computer Applications (MCA)
+
 Institution: SCMS School of Engineering and Technology
+
 University: APJ Abdul Kalam Technological University
 ---
 ##  Developed By
