@@ -146,13 +146,18 @@ http://127.0.0.1:5000
 - Multi-city comparison dashboard
 
 ---
-##  Author
+## Academic Information
+
+Project Title: AQI-Prediction-System
+Course: Master of Computer Applications (MCA)
+Institution: SCMS School of Engineering and Technology
+University: APJ Abdul Kalam Technological University
+---
+##  Developed By
 
 Jeeson Justin
-
-MCA Final Year Student
-UI/UX Designer | Web Developer | ML Enthusiast
-
+MCA Student | UI/UX Designer | Full Stack Developer
+- GitHub: https://github.com/jeesonjustin
+- LinkedIn: https://linkedin.com/in/jeesonjustin
 ---
-##  License
-This project is developed for educational and academic purposes.
+
